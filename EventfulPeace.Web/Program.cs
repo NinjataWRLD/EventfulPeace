@@ -1,15 +1,35 @@
+using EventfulPeace.Web.Extensions;
+using static EventfulPeace.Domain.Users.UserConstants.Roles;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Necessary services
+builder.Services.AddAuthN().AddCookie();
+builder.Services.AddAuthZ([Individual, Organization]);
+
+// Project Layers
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddUseCases();
+
+// Database Updater
+if (args.Contains("--migrate"))
+{
+    await builder.Services.AddDbMigrationUpdater().ConfigureAwait(false);
+}
+else if (args.Contains("--migrate-only"))
+{
+    await builder.Services.AddDbMigrationUpdater().ConfigureAwait(false);
+    return;
+}
+
+// Web app
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -18,10 +38,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
-app.Run();
+await app.RunAsync().ConfigureAwait(false);
