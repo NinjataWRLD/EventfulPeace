@@ -18,15 +18,15 @@ public class UsersController(ISender sender) : Controller
     public IActionResult Register()
         => View(new RegisterUserForm());
 
-    [HttpPost("Register")]
-    public async Task<IActionResult> Register(RegisterUserForm form, CancellationToken ct = default)
+    [HttpPost("RegisterIndividual")]
+    public async Task<IActionResult> RegisterIndividual(RegisterUserForm form, CancellationToken ct = default)
     {
         try
         {
             RegisterIndividualRequest request = new(
-                Username: form.Username,
-                Password: form.Password,
-                Email: form.Email
+                Username: form.IndividualModel.Username,
+                Password: form.IndividualModel.Password,
+                Email: form.IndividualModel.Email
             );
             await sender.Send(request, ct).ConfigureAwait(false);
             return RedirectToHome();
@@ -37,16 +37,16 @@ public class UsersController(ISender sender) : Controller
         }
     }
 
-    [HttpPost("Register/{phone}")]
-    public async Task<IActionResult> Register(string phone, RegisterUserForm form, CancellationToken ct = default)
+    [HttpPost("RegisterOrganization")]
+    public async Task<IActionResult> RegisterOrganization(RegisterUserForm form, CancellationToken ct = default)
     {
         try
         {
             RegisterOrganizationRequest request = new(
-                Username: form.Username,
-                Password: form.Password,
-                Email: form.Email,
-                Phone: phone
+                Username: form.OrganizationModel.Username,
+                Password: form.OrganizationModel.Password,
+                Email: form.OrganizationModel.Email,
+                Phone: form.OrganizationModel.Phone
             );
             await sender.Send(request, ct).ConfigureAwait(false);
             return RedirectToHome();
