@@ -5,6 +5,7 @@
             <h1>Register as Individual</h1>
             <form id="registerForm" method="post" asp-action="RegisterIndividual">
                 <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="IndividualModel.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="SomeOne123" />
                     <label asp-for="IndividualModel.Username">Username</label>

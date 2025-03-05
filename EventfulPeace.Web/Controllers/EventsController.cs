@@ -43,8 +43,9 @@ public class EventsController(ISender sender) : Controller
             await sender.Send(request, ct).ConfigureAwait(false);
             return RedirectToAction(nameof(Index));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            ModelState.AddModelError(string.Empty, ex.Message);
             form.Locations = await sender.Send(new GetAllLocationsRequest(), ct);
             return View(form);
         }

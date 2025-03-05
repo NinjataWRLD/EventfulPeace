@@ -31,9 +31,10 @@ public class UsersController(ISender sender) : Controller
             await sender.Send(request, ct).ConfigureAwait(false);
             return RedirectToHome();
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return View(nameof(Register), form);
         }
     }
 
@@ -51,9 +52,10 @@ public class UsersController(ISender sender) : Controller
             await sender.Send(request, ct).ConfigureAwait(false);
             return RedirectToHome();
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return View(nameof(Register), form);
         }
     }
 
@@ -75,8 +77,9 @@ public class UsersController(ISender sender) : Controller
             return RedirectToHome();
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            ModelState.AddModelError(string.Empty, ex.Message);
             return View();
         }
     }
