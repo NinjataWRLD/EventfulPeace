@@ -1,2 +1,50 @@
 ﻿@using EventfulPeace.Application.Events.GetAllByLocation
 @model Dictionary<string, GetAllEventsByLocationDto[]>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">About EventfulPeace</h2>
+        <p class="text-center">EventfulPeace is an innovative platform dedicated to organizing, discovering, and promoting peaceful events around the world. Whether you’re looking to create an event or join one, our mission is to foster a community where events bring people together in harmony.</p>
+        <p class="text-center">We believe in the power of peace-building through shared experiences, and our goal is to provide users with the best tools and opportunities to create meaningful connections through events. Join us today and be a part of the movement!</p>
+    </div>
+</section>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Events around the country!</h2>
+    @foreach (var kvp in Model)
+    {
+        string location = kvp.Key;
+        GetAllEventsByLocationDto[] events = kvp.Value;
+
+        <div class="region-section">
+            <div class="region-title">@location</div>
+            <div class="container mt-4">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    @foreach (var e in events)
+                    {
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">@e.Name</h5>
+                                    <p class="card-text"><strong>Date: </strong>@e.OccursAt</p>
+                                    <p class="card-text"><strong>Organizer: </strong>@e.Creator.Name</p>
+                                    <a class="btn btn-custom" asp-action="Details" asp-route-id="@e.Id">More Info</a>
+                                    <a class="btn btn-warning">Join</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="section-divider"></div>
+    }
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" />
+}

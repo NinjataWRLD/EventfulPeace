@@ -16,7 +16,7 @@ public class HomeController(ISender sender) : Controller
             new GetAllEventsByLocationRequest(Pagination: new(limit, page))
         ));
 
-    [HttpGet("{id}")]
+    [HttpGet]
     public async Task<IActionResult> Details(Guid id, CancellationToken ct = default)
         => View(model: await sender.Send(
             new GetSingleEventRequest(Id: EventId.New(id)), ct

@@ -18,6 +18,7 @@ public class GetAllEventsUseCase(IEventReads eventReads, IUserReads userReads)
             Pagination: req.Pagination,
             Name: req.Name,
             CreatorId: req.CreatorId,
+            ParticipantId: req.ParticipantId,
             Sorting: req.Sorting
         );
         Result<Event> result = await eventReads.AllAsync(query, track: false, ct: ct).ConfigureAwait(false);

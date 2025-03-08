@@ -1,0 +1,39 @@
+﻿.section-divider {
+    border-top: 2px solid #006400; /* Dark Green line to separate sections */
+    margin: 40px 0;
+}
+
+.region-section {
+    padding: 20px;
+    background-color: #f0f0f0; /* Light background for each section */
+    border-radius: 8px;
+}
+
+.region-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #004d00; /* Darker Green */
+}
+
+/* Event Card Styling */
+.card {
+    border-radius: 10px;
+    padding: 15px;
+    transition: transform 0.3s ease;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+
+.btn-warning {
+    color: #000;
+    background-color: #fff6a3; /* Lighter Yellow */
+    border-color: #fff6a3;
+}
+
+    .btn-warning:hover {
+        background-color: #ffe45c; /* Slightly darker yellow on hover */
+        border-color: #ffe45c;
+    }

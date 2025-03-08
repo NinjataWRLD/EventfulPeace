@@ -1,0 +1,39 @@
+﻿.login-section {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+.custom-input {
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .custom-input:focus {
+        border-color: #1e7e34;
+        box-shadow: 0px 0px 8px rgba(40, 167, 69, 0.5);
+    }
+
+.btn-custom {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+    .btn-custom:hover {
+        background-color: #1e7e34;
+        transform: scale(1.03);
+    }
+
+.section-divider {
+    border-top: 2px solid #006400;
+    margin-bottom: 20px;
+}
+
+.text-success {
+    color: #006400 !important;
+}
