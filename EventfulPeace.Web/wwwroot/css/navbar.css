@@ -1,0 +1,53 @@
+﻿/* Cool and minimal title style for EventfulPeace */
+.navbar-brand {
+    font-family: 'Montserrat', sans-serif; /* Modern font */
+    font-size: 1.8rem; /* Larger font size */
+    font-weight: 500; /* Bold weight */
+    color: #28a745; /* Bright Green */
+    letter-spacing: 2px; /* Add space between letters */
+    text-align: center;
+    padding: 10px;
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+    position: relative;
+}
+
+
+
+    /* Hover Effect */
+    .navbar-brand:hover {
+        color: #006400; /* Dark green on hover */
+        letter-spacing: 3px; /* Slightly more spacing on hover */
+    }
+
+/* Cool Green Theme */
+.navbar-custom {
+    background-color: #b2d8b2; /* Soft Cool Green */
+}
+
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link {
+        color: #006400 !important; /* Dark Green */
+    }
+
+        .navbar-custom .nav-link:hover {
+            color: #004d00 !important; /* Even Darker Green */
+        }
+
+.btn-custom {
+    color: #fff;
+    background-color: #28a745; /* Vibrant Green */
+    border-color: #28a745;
+}
+
+    .btn-custom:hover {
+        background-color: #1e7e34;
+        border-color: #1c7430;
+    }
+
+.dropdown-menu {
+    background-color: whitesmoke; /* Soft Cool Green */
+}
+
+.dropdown-item:hover {
+    background-color: #99c299 !important; /* Slightly Darker Green */
+}
