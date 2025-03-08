@@ -15,7 +15,16 @@ namespace EventfulPeace.Web.Controllers;
 public class EventsController(ISender sender) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index(int page, int limit, string? name, CancellationToken ct = default)
+    public async Task<IActionResult> Index(int page = 1, int limit = 20, string? name = null, CancellationToken ct = default)
+        => View(model:
+            await sender.Send(new GetAllEventsRequest(
+                Pagination: new(limit, page),
+                ParticipantId: User.GetUserId(),
+                Name: name
+            ), ct));
+
+    [HttpGet]
+    public async Task<IActionResult> Created(int page = 1, int limit = 20, string? name = null, CancellationToken ct = default)
         => View(model: (
             Events: await sender.Send(new GetAllEventsRequest(
                 Pagination: new(limit, page),

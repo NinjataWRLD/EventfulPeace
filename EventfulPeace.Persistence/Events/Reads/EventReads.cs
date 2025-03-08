@@ -12,10 +12,14 @@ public class EventReads(ApplicationContext context) : IEventReads
 {
     public async Task<Result<Event>> AllAsync(EventsQuery query, bool track = true, CancellationToken ct = default)
     {
+        EventId[]? ids = await context.Participants
+            .GeEventIdsByParticipantIdsOrDefaultAsync(query.ParticipantId, ct)
+            .ConfigureAwait(false);
+
         IQueryable<Event> queryable = context.Events
             .WithTracking(track)
             .Include(x => x.Location)
-            .WithFilter(query.CreatorId, null)
+            .WithFilter(ids, query.CreatorId)
             .WithSearch(query.Name);
 
         int count = await queryable.CountAsync(ct).ConfigureAwait(false);

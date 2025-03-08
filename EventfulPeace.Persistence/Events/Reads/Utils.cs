@@ -1,16 +1,18 @@
 ﻿using EventfulPeace.Domain.Common.TypedIds;
 using EventfulPeace.Domain.Events;
 using EventfulPeace.Domain.Events.Enums;
+using EventfulPeace.Persistence.ShadowEntities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventfulPeace.Persistence.Events.Reads;
 
 public static class Utils
 {
-    public static IQueryable<Event> WithFilter(this IQueryable<Event> queryable, UserId? creatorId, LocationId? locationId)
+    public static IQueryable<Event> WithFilter(this IQueryable<Event> queryable, EventId[]? ids, UserId? creatorId)
     {
-        if (locationId is not null)
+        if (ids is not null)
         {
-            queryable = queryable.Where(x => x.LocationId == locationId);
+            queryable = queryable.Where(x => ids.Contains(x.Id));
         }
         if (creatorId is not null)
         {
@@ -43,4 +45,15 @@ public static class Utils
 
     public static IQueryable<Event> WithPagination(this IQueryable<Event> query, int page, int limit)
         => query.Skip((page - 1) * limit).Take(limit);
+
+    public static async Task<EventId[]?> GeEventIdsByParticipantIdsOrDefaultAsync(this DbSet<Participant> set, UserId? participantId, CancellationToken ct = default)
+        => participantId is not null
+            ? await set
+                .Where(x => participantId == x.ParticipantId)
+                .GroupBy(x => x.EventId)
+                .Where(x => x.Count() == 1)
+                .Select(x => x.Key)
+                .ToArrayAsync(ct)
+                .ConfigureAwait(false)
+            : null;
 }
