@@ -7,13 +7,24 @@
 <div class="content container my-5">
     <h1 class="text-center mb-4">Event Details</h1>
 
-    <div class="card">
-        <div class="card-body">
-            <h2 class="card-title"><span id="event-name">@Model.Name</span></h2>
-            <h5 class="card-subtitle mb-2 text-muted">Date: <span id="event-date">@Model.OccursAt</span></h5>
-            <p class="card-text"><strong>Description: </strong> <span id="event-description">@Model.Description</span></p>
-            <p class="card-text"><strong>Creator: </strong> <span id="event-creator">@Model.Creator.Name</span></p>
-            <a class="btn btn-custom mt-3" id="join-btn">Join Event</a>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><span id="event-name">@Model.Name</span></h2>
+                    <h5 class="card-subtitle mb-2 text-muted">Date: <span id="event-date">@Model.OccursAt</span></h5>
+                    <p class="card-text"><strong>Description: </strong> <span id="event-description">@Model.Description</span></p>
+                    <p class="card-text"><strong>Creator: </strong> <span id="event-creator">@Model.Creator.Name</span></p>
+                    <a class="btn btn-custom mt-3" id="join-btn">Join Event</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 d-flex align-items-center justify-content-center"> <!-- Full height & centered content -->
+                <div class="card-body text-center">
+                    <img id="event-image" src="~/images/default-event.jpg" alt="Event Image" class="img-fluid rounded" style="max-height: 100%; object-fit: cover;">
+                </div>
+            </div>
         </div>
     </div>
 </div>
