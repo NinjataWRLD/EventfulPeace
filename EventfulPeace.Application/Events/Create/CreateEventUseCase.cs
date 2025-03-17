@@ -22,6 +22,9 @@ public class CreateEventUseCase(IEventWrites writes, IUnitOfWork uow)
         await writes.AddAsync(entity, ct).ConfigureAwait(false);
         await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
+        await writes.JoinAsync(entity.Id, req.CreatorId, ct);
+        await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
         return entity.Id;
     }
 }
