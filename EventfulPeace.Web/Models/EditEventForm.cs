@@ -2,8 +2,10 @@
 
 namespace EventfulPeace.Web.Models;
 
-public class CreateEventForm
+public class EditEventForm
 {
+    public Guid Id { get; set; }
+
     [DisplayName("Event Name")]
     public string Name { get; set; } = string.Empty;
 
@@ -12,9 +14,6 @@ public class CreateEventForm
 
     [DisplayName("Date & Time")]
     public DateTime OccursAt { get; set; }
-
-    [DisplayName("Upload Image")]
-    public IFormFile Image { get; set; } = null!;
 
     [DisplayName("Region")]
     public Guid LocationId { get; set; }

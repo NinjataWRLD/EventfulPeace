@@ -20,6 +20,6 @@ public class GetSingleEventUseCase(IEventReads eventReads, IUserReads userReads)
         User user = await userReads.SingleAsync(entity.CreatorId, track: false, ct).ConfigureAwait(false)
             ?? throw UserException.NotFound(entity.CreatorId);
 
-        return entity.ToDto(user.ToDto());
+        return entity.ToDto(user.ToDto(), new ImageDto() { Path = entity.ImagePath });
     }
 }

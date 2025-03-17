@@ -75,6 +75,10 @@ static class ConfigUtils
             .IsRequired()
             .HasMaxLength(DescriptionMaxLength)
             .HasColumnName(nameof(Event.Description));
+        
+        builder.Property(x => x.ImagePath)
+            .IsRequired()
+            .HasColumnName(nameof(Event.ImagePath));
 
         builder.Property(x => x.CreatedAt)
             .IsRequired()
@@ -106,7 +110,7 @@ static class ConfigUtils
                 creatorId: UserConstants.Ids.Organization1,
                 locationId: Locations.Burgas,
                 createdAt: new DateTime(2025, 3, 04, 14, 00, 0, DateTimeKind.Utc)
-            ),
+            ).SetImagePath(e => $"images/{e.Name}-{e.Id}.jpg"),
             Event.Create(
                 id: EventId.New(Guid.Parse("e1101e2c-32cc-456f-9c82-4f1d1a65d141")),
                 name: "Street Food Festeival",
@@ -115,7 +119,7 @@ static class ConfigUtils
                 creatorId: UserConstants.Ids.Individual1,
                 locationId: Locations.Sofia,
                 createdAt: new DateTime(2025, 3, 04, 14, 00, 0, DateTimeKind.Utc)
-            ),
+            ).SetImagePath(e => $"images/{e.Name}-{e.Id}.jpg"),
             Event.Create(
                 id: EventId.New(Guid.Parse("f3ad41d3-ee90-4988-9195-8b2a8f4f2733")),
                 name: "Astronomical View",
@@ -124,7 +128,7 @@ static class ConfigUtils
                 creatorId: UserConstants.Ids.Individual2,
                 locationId: Locations.Plovdiv,
                 createdAt: new DateTime(2025, 3, 04, 14, 00, 0, DateTimeKind.Utc)
-            ),
+            ).SetImagePath(e => $"images/{e.Name}-{e.Id}.webp"),
             Event.Create(
                 id: EventId.New(Guid.Parse("fad1b19d-5333-4633-bd84-d67c64649f65")),
                 name: "The Greenery Challenge",
@@ -133,7 +137,7 @@ static class ConfigUtils
                 creatorId: UserConstants.Ids.Individual2,
                 locationId: Locations.VelikoTarnovo,
                 createdAt: new DateTime(2025, 3, 04, 14, 00, 0, DateTimeKind.Utc)
-            ),
+            ).SetImagePath(e => $"images/{e.Name}-{e.Id}.jpg"),
         ]);
 
         return builder;
