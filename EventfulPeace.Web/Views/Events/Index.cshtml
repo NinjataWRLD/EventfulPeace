@@ -1,2 +1,81 @@
 ﻿@using EventfulPeace.Application.Events.GetAll
-@model Result<GetAllEventsDto>
+@model (EventsModel Created, EventsModel Joined)
+@{
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3 p-3">
+                <div class="card-header text-center">
+                    <h4 class="text mb-4">Created Events</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group mb-4">
+                        @foreach (var e in Model.Created.Events)
+                        {
+                            <div class="list-group-item list-group-item-action shadow-sm rounded-3 d-flex justify-content-between align-items-center">
+                                <span>@e.Name</span>
+                                <div class="d-flex justify-content-between gap-2">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@e.Id" class="btn btn-custom">More Info</a>
+                                    <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-warning">Edit</a>
+                                    <form asp-action="Delete" asp-route-id="@e.Id.Value" onclick="confirm('Are you sure you want to delete your event?')">
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <partial name="_PaginationPartial"
+                         view-data="ViewData"
+                         view-data-page-param="@("createdPage")"
+                         view-data-limit-param="@("createdLimit")"
+                         view-data-other-page-param="@("joinedPage")"
+                         view-data-other-page="@(Model.Joined.Page)"
+                         view-data-other-limit-param="@("joinedLimit")"
+                         view-data-other-limit="@(Model.Joined.Limit)"
+                         model="new PaginationViewModel(Model.Created.Page, Model.Created.Limit, Model.Created.Total)" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-3 p-3">
+                <div class="card-header text-center">
+                    <h4 class="text mb-4">Joined Events</h4>
+                </div>
+                <div class="card-body">
+                    <div class="list-group mb-4">
+                        <div class="list-group mb-4">
+                            @foreach (var e in Model.Joined.Events)
+                            {
+                                <div class="list-group-item list-group-item-action shadow-sm rounded-3 d-flex justify-content-between align-items-center">
+                                    <span>@e.Name</span>
+                                    <div class="d-flex justify-content-between gap-2">
+                                        <a asp-controller="Home" asp-action="Details" asp-route-id="@e.Id" class="btn btn-custom">More Info</a>
+                                        <form asp-action="Leave" asp-route-id="@e.Id.Value" onclick="confirm('Are you sure you want to leave this event?')">
+                                            <button class="btn btn-danger" type="submit">Leave</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <partial name="_PaginationPartial"
+                         view-data="ViewData"
+                         view-data-page-param="@("joinedPage")"
+                         view-data-limit-param="@("joinedLimit")"
+                         view-data-other-page-param="@("createdPage")"
+                         view-data-other-page="@(Model.Created.Page)"
+                         view-data-other-limit-param="@("createdLimit")"
+                         view-data-other-limit="@(Model.Created.Limit)"
+                         model="new PaginationViewModel(Model.Joined.Page, Model.Joined.Limit, Model.Joined.Total)" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/events.css" />
+}
