@@ -52,4 +52,28 @@ public sealed class Event
     {
         Id = id
     };
+
+    public Event SetName(string name)
+    {
+        Name = name;
+        return this;
+    }
+
+    public Event SetDescription(string description)
+    {
+        Description = description;
+        return this;
+    }
+    
+    public Event SetOccursAt(DateTime occursAt)
+    {
+        OccursAt = occursAt;
+        return this;
+    }
+
+    public Event SetLocationId(LocationId locationId)
+    {
+        LocationId = locationId;
+        return this;
+    }
 }

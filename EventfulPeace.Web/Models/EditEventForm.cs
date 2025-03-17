@@ -2,8 +2,10 @@
 
 namespace EventfulPeace.Web.Models;
 
-public class CreateEventForm
+public class EditEventForm
 {
+    public Guid Id { get; set; }
+
     [DisplayName("Event Name")]
     public string Name { get; set; } = string.Empty;
 
