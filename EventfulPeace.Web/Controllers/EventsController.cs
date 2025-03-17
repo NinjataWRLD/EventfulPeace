@@ -65,7 +65,8 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
             string path = await FileExtensions.UploadImageAsync(env, form.Image, $"{form.Name}-{id}");
             SetEventImagePathRequest setImageRequest = new(
                 Id: id,
-                Path: path
+                Path: path,
+                CreatorId: User.GetUserId()
             );
             await sender.Send(setImageRequest, ct).ConfigureAwait(false);
 
@@ -158,7 +159,8 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
         FileExtensions.DeleteFile(env, image.Path, image.Extension);
 
         DeleteEventRequest request = new(
-            Id: EventId.New(id)
+            Id: EventId.New(id),
+            CreatorId: User.GetUserId()
         );
         await sender.Send(request, ct).ConfigureAwait(false);
 

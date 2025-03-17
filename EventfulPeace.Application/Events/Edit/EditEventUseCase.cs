@@ -14,6 +14,9 @@ public class EditEventUseCase(IEventReads reads, IUnitOfWork uow)
         Event e = await reads.SingleAsync(req.Id, ct: ct).ConfigureAwait(false)
             ?? throw EventException.NotFound(req.Id);
 
+        if (e.CreatorId != req.CreatorId)
+            throw EventException.NotFound(req.Id);
+
        e.SetName(req.Name);
        e.SetDescription(req.Description);
        e.SetOccursAt(req.OccursAt);

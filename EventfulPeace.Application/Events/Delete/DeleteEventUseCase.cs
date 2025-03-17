@@ -12,10 +12,13 @@ public class DeleteEventUseCase(IEventReads reads, IEventWrites writes, IUnitOfW
 {
     public async Task Handle(DeleteEventRequest req, CancellationToken ct)
     {
-        Event entity = await reads.SingleAsync(req.Id, ct: ct).ConfigureAwait(false)
+        Event e = await reads.SingleAsync(req.Id, ct: ct).ConfigureAwait(false)
             ?? throw EventException.NotFound(req.Id);
 
-        writes.Remove(entity);
+        if (req.CreatorId == e.CreatorId)
+            throw EventException.Unauthorized(req.Id, req.CreatorId);
+
+        writes.Remove(e);
         await uow.SaveChangesAsync(ct).ConfigureAwait(false);
     }
 }

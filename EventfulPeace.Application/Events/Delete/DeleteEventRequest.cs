@@ -4,5 +4,6 @@ using MediatR;
 namespace EventfulPeace.Application.Events.Delete;
 
 public record DeleteEventRequest(
-    EventId Id
+    EventId Id,
+    UserId CreatorId
 ) : IRequest;

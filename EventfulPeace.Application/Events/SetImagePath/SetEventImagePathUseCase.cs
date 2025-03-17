@@ -14,6 +14,9 @@ public class SetEventImagePathUseCase(IEventReads reads, IUnitOfWork uow)
         Event e = await reads.SingleAsync(req.Id, ct: ct).ConfigureAwait(false)
             ?? throw EventException.NotFound(req.Id);
 
+        if (req.CreatorId != e.CreatorId)
+            throw EventException.Unauthorized(req.Id, req.CreatorId);
+
         e.SetImagePath(req.Path);
         await uow.SaveChangesAsync(ct).ConfigureAwait(false);
     }

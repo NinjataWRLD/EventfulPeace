@@ -8,5 +8,6 @@ public record EditEventRequest(
     string Name,
     string Description,
     DateTime OccursAt,
+    UserId CreatorId,
     LocationId LocationId
 ) : IRequest;

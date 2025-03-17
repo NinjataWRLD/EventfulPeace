@@ -5,5 +5,6 @@ namespace EventfulPeace.Application.Events.SetImagePath;
 
 public record SetEventImagePathRequest(
     EventId Id,
-    string Path
+    string Path,
+    UserId CreatorId
 ) : IRequest;
