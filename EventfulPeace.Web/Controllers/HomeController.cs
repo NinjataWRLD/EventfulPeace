@@ -22,6 +22,18 @@ public class HomeController(ISender sender) : Controller
             new GetSingleEventRequest(Id: EventId.New(id)), ct
         ));
 
+    [HttpGet]
+    public async Task<IActionResult> DownloadEventImage(Guid id, CancellationToken ct = default)
+    {
+        var e = await sender.Send(
+            new GetSingleEventRequest(Id: EventId.New(id)), ct
+        );
+        return File(
+            virtualPath: e.Image.Path,
+            contentType: e.Image.Extension == "png" ? "image/png" : "image/jpeg"
+        );
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

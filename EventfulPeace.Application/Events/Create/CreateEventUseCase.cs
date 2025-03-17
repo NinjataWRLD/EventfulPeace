@@ -1,11 +1,12 @@
 ﻿using EventfulPeace.Domain.Common.Repositories;
 using EventfulPeace.Domain.Common.TypedIds;
 using EventfulPeace.Domain.Events;
+using EventfulPeace.Domain.Events.Writes;
 using MediatR;
 
 namespace EventfulPeace.Application.Events.Create;
 
-public class CreateEventUseCase(IWrites<Event> writes, IUnitOfWork uow)
+public class CreateEventUseCase(IEventWrites writes, IUnitOfWork uow)
     : IRequestHandler<CreateEventRequest, EventId>
 {
     public async Task<EventId> Handle(CreateEventRequest req, CancellationToken ct)
@@ -19,6 +20,9 @@ public class CreateEventUseCase(IWrites<Event> writes, IUnitOfWork uow)
         );
 
         await writes.AddAsync(entity, ct).ConfigureAwait(false);
+        await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+        await writes.JoinAsync(entity.Id, req.CreatorId, ct);
         await uow.SaveChangesAsync(ct).ConfigureAwait(false);
 
         return entity.Id;

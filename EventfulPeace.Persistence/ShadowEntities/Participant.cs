@@ -5,7 +5,7 @@ namespace EventfulPeace.Persistence.ShadowEntities;
 public class Participant
 {
     private Participant() { }
-    private Participant(UserId participantId, EventId eventId)
+    public Participant(UserId participantId, EventId eventId)
     {
         ParticipantId = participantId;
         EventId = eventId;

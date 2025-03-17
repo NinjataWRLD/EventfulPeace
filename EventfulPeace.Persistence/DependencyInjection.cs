@@ -1,9 +1,11 @@
 ﻿using EventfulPeace.Domain.Common.Repositories;
 using EventfulPeace.Domain.Events.Reads;
+using EventfulPeace.Domain.Events.Writes;
 using EventfulPeace.Domain.Invitations.Reads;
 using EventfulPeace.Persistence;
 using EventfulPeace.Persistence.Common;
 using EventfulPeace.Persistence.Events.Reads;
+using EventfulPeace.Persistence.Events.Writes;
 using EventfulPeace.Persistence.Invitations.Reads;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -52,7 +54,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddWrites(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IWrites<>), typeof(Writes<>));
+        services.AddScoped<IEventWrites, EventWrites>();
 
         return services;
     }
