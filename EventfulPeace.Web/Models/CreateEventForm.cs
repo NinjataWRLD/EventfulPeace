@@ -13,6 +13,9 @@ public class CreateEventForm
     [DisplayName("Date & Time")]
     public DateTime OccursAt { get; set; }
 
+    [DisplayName("Upload Image")]
+    public IFormFile Image { get; set; } = null!;
+
     [DisplayName("Region")]
     public Guid LocationId { get; set; }
 

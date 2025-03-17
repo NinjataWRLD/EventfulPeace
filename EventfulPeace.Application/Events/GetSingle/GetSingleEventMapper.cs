@@ -7,7 +7,7 @@ namespace EventfulPeace.Application.Events.GetSingle;
 
 internal static class GetSingleEventMapper
 {
-    internal static GetSingleEventDto ToDto(this Event @event, UserDto creator)
+    internal static GetSingleEventDto ToDto(this Event @event, UserDto creator, ImageDto image)
         => new(
             Id: @event.Id,
             Name: @event.Name,
@@ -15,6 +15,7 @@ internal static class GetSingleEventMapper
             OccursAt: @event.OccursAt,
             CreatedAt: @event.CreatedAt,
             Location: @event.Location.ToDto(),
-            Creator: creator
+            Creator: creator,
+            Image: image
         );
 }

@@ -1,4 +1,5 @@
-﻿using EventfulPeace.Application.Events.Create;
+﻿using EventfulPeace.Application.Common.Dtos;
+using EventfulPeace.Application.Events.Create;
 using EventfulPeace.Application.Events.Delete;
 using EventfulPeace.Application.Events.Edit;
 using EventfulPeace.Application.Events.GetAll;
@@ -6,6 +7,7 @@ using EventfulPeace.Application.Events.GetLocations;
 using EventfulPeace.Application.Events.GetSingle;
 using EventfulPeace.Application.Events.Join;
 using EventfulPeace.Application.Events.Leave;
+using EventfulPeace.Application.Events.SetImagePath;
 using EventfulPeace.Domain.Common.TypedIds;
 using EventfulPeace.Web.Extensions;
 using EventfulPeace.Web.Models;
@@ -17,7 +19,7 @@ using EventId = EventfulPeace.Domain.Common.TypedIds.EventId;
 namespace EventfulPeace.Web.Controllers;
 
 [Authorize]
-public class EventsController(ISender sender) : Controller
+public class EventsController(ISender sender, IWebHostEnvironment env) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index(int page = 1, int limit = 20, string? name = null, CancellationToken ct = default)
@@ -58,7 +60,14 @@ public class EventsController(ISender sender) : Controller
                 CreatorId: User.GetUserId(),
                 LocationId: LocationId.New(form.LocationId)
             );
-            await sender.Send(request, ct).ConfigureAwait(false);
+            EventId id = await sender.Send(request, ct).ConfigureAwait(false);
+
+            string path = await FileExtensions.UploadImageAsync(env, form.Image, $"{form.Name}-{id}");
+            SetEventImagePathRequest setImageRequest = new(
+                Id: id,
+                Path: path
+            );
+            await sender.Send(setImageRequest, ct).ConfigureAwait(false);
 
             return RedirectToAction(nameof(Index));
         }
@@ -144,10 +153,15 @@ public class EventsController(ISender sender) : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
+        var e = await sender.Send(new GetSingleEventRequest(EventId.New(id)), ct);
+        ImageDto image = e.Image;
+        FileExtensions.DeleteFile(env, image.Path, image.Extension);
+
         DeleteEventRequest request = new(
             Id: EventId.New(id)
         );
         await sender.Send(request, ct).ConfigureAwait(false);
+
         return RedirectToAction(nameof(Index));
     }
 }

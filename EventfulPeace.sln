@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{975ABF5F-BA63-44AE-A124-91730CAE12BC}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventfulPeace.Domain", "EventfulPeace.Domain\EventfulPeace.Domain.csproj", "{735AEF36-1947-4415-93B5-62E9A16124CD}"

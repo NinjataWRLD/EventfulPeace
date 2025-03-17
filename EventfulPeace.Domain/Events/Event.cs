@@ -26,6 +26,7 @@ public sealed class Event
     public EventId Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
+    public string ImagePath { get; private set; } = string.Empty;
     public DateTime CreatedAt { get; private set; }
     public DateTime OccursAt { get; private set; }
     public UserId CreatorId { get; private set; }
@@ -65,6 +66,18 @@ public sealed class Event
         return this;
     }
     
+    public Event SetImagePath(string path)
+    {
+        ImagePath = path;
+        return this;
+    }
+    
+    public Event SetImagePath(Func<Event, string> func)
+    {
+        ImagePath = func(this);
+        return this;
+    }
+
     public Event SetOccursAt(DateTime occursAt)
     {
         OccursAt = occursAt;

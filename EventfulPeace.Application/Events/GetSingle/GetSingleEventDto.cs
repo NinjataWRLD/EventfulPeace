@@ -11,5 +11,6 @@ public record GetSingleEventDto(
     DateTime CreatedAt,
     DateTime OccursAt,
     LocationDto Location,
-    UserDto Creator
+    UserDto Creator,
+    ImageDto Image
 );
