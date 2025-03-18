@@ -30,7 +30,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title">@e.Name</h5>
                                     <p class="card-text"><strong>Date: </strong>@e.OccursAt</p>
-                                    <p class="card-text"><strong>Organizer: </strong>@e.Creator.Name  <i class="fa-solid fa-users" style="color: #006400;"></i></p> 
+                                    @if (e.Creator.Role=="Organization"){
+                                    <p class="card-text"><strong>Organizer: </strong>@e.Creator.Name  <i class="fa-solid fa-users" style="color: #006400;"></i></p>
+                                    }
+                                    else{
+                                        <p class="card-text"><strong>Organizer: </strong>@e.Creator.Name</p>
+                                    }
                                     <a class="btn btn-custom" asp-action="Details" asp-route-id="@e.Id">More Info</a>
                                 </div>
                             </div>
