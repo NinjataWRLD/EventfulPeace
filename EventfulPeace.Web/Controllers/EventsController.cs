@@ -24,9 +24,9 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
     [HttpGet]
     public async Task<IActionResult> Index(
         int createdPage = 1,
-        int createdLimit = 10,
+        int createdLimit = 3,
         int joinedPage = 1,
-        int joinedLimit = 10,
+        int joinedLimit = 3,
         CancellationToken ct = default
     )
     {
