@@ -58,4 +58,12 @@ public class EventReads(ApplicationContext context) : IEventReads
             .Include(x => x.Location)
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             .ConfigureAwait(false);
+
+    public async Task<UserId[]> ParticipantsByIdAsync(EventId id, CancellationToken ct = default)
+        => await context.Participants
+            .AsNoTracking()
+            .Where(x => x.EventId == id)
+            .Select(x => x.ParticipantId)
+            .ToArrayAsync(ct)
+            .ConfigureAwait(false);
 }

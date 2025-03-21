@@ -12,5 +12,6 @@ public record GetSingleEventDto(
     DateTime OccursAt,
     LocationDto Location,
     UserDto Creator,
+    UserDto[] Participants,
     ImageDto Image
 );
