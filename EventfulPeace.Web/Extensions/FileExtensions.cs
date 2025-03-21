@@ -8,8 +8,17 @@ public static class FileExtensions
         => $"{Path.Combine("images", name)}";
 
     private static string GetPath(this IWebHostEnvironment env, string fileName)
-        => Path.Combine(env.WebRootPath, fileName);
-    
+    {
+        string rootPath = env.WebRootPath;
+
+        if (string.IsNullOrEmpty(rootPath) || !Directory.Exists(rootPath))
+        {
+            rootPath = "/tmp";
+        }
+
+        return Path.Combine(rootPath, fileName);
+    }
+
     public static string GetFileExtension(this IFormFile file)
         => Path.GetExtension(file.FileName);
 
@@ -21,16 +30,18 @@ public static class FileExtensions
             throw new ArgumentException(InvalidSize, nameof(image));
         }
 
-        string path = $"{name}{image.GetFileExtension()}";
-        using FileStream stream = new(env.GetPath($"images\\{path}"), FileMode.Create);
+        string fileName = $"{name}{image.GetFileExtension()}";
+        string filePath = env.GetPath(Path.Combine("images", fileName));
+
+        using FileStream stream = new(filePath, FileMode.Create);
         await image.CopyToAsync(stream).ConfigureAwait(false);
 
-        return GetRelativePath(path);
+        return GetRelativePath(fileName);
     }
 
     public static void DeleteFile(this IWebHostEnvironment env, string name, string extension)
     {
         string path = env.GetPath(name + extension);
-        File.Delete(path);
+        if (File.Exists(path)) File.Delete(path);
     }
 }
