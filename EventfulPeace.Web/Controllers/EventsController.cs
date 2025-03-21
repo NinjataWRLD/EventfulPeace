@@ -10,16 +10,18 @@ using EventfulPeace.Application.Events.Leave;
 using EventfulPeace.Application.Events.SetImagePath;
 using EventfulPeace.Domain.Common.TypedIds;
 using EventfulPeace.Web.Extensions;
+using EventfulPeace.Web.Hubs;
 using EventfulPeace.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using EventId = EventfulPeace.Domain.Common.TypedIds.EventId;
 
 namespace EventfulPeace.Web.Controllers;
 
 [Authorize]
-public class EventsController(ISender sender, IWebHostEnvironment env) : Controller
+public class EventsController(ISender sender, IWebHostEnvironment env, IHubContext<EventsHub> hub) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index(
@@ -91,6 +93,7 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
                 CreatorId: User.GetUserId()
             );
             await sender.Send(setImageRequest, ct).ConfigureAwait(false);
+            await hub.Clients.All.SendAsync("EventsChanged", ct);
 
             return RedirectToAction(nameof(Index));
         }
@@ -139,6 +142,8 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
                 LocationId: LocationId.New(form.LocationId)
             );
             await sender.Send(request, ct).ConfigureAwait(false);
+            await hub.Clients.All.SendAsync("", ct);
+
             return RedirectToAction(nameof(Index));
         }
         catch (Exception ex)
@@ -185,6 +190,7 @@ public class EventsController(ISender sender, IWebHostEnvironment env) : Control
             CreatorId: User.GetUserId()
         );
         await sender.Send(request, ct).ConfigureAwait(false);
+        await hub.Clients.All.SendAsync("EventsChanged", ct);
 
         return RedirectToAction(nameof(Index));
     }

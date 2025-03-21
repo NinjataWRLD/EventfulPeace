@@ -18,7 +18,7 @@
                             <th>Role</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="usersTableBody">
                         @foreach (var u in Model.Users.Users)
                         {
                             <tr>
@@ -52,7 +52,7 @@
                             <th>Occurs At</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="eventsTableBody">
                         @foreach (var e in Model.Events.Events)
                         {
                             <tr>
@@ -76,3 +76,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="~/js/signalr-events.js"></script>
+    <script src="~/js/signalr-users.js"></script>
+}

@@ -1,4 +1,3 @@
-using EventfulPeace.Web.Extensions;
 using static EventfulPeace.Domain.Users.UserConstants.Roles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Necessary services
 builder.Services.AddAuthN().AddCookie();
 builder.Services.AddAuthZ([Individual, Organization, Admin]);
+builder.Services.AddSignalR();
 
 // Project Layers
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -45,5 +45,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
+app.MapSignalRHubs();
 
 await app.RunAsync().ConfigureAwait(false);

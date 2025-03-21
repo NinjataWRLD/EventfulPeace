@@ -4,6 +4,8 @@ using EventfulPeace.Application.Users;
 using EventfulPeace.Identity;
 using EventfulPeace.Identity.AppRoles;
 using EventfulPeace.Identity.AppUsers;
+using EventfulPeace.Web;
+using EventfulPeace.Web.Hubs;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -12,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Reflection;
 
 #pragma warning disable IDE0130
-namespace EventfulPeace.Web.Extensions;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ProgramExtensions
 {
@@ -83,5 +85,13 @@ public static class ProgramExtensions
         services.AddApplicationPersistence(config);
         services.AddIdentityPersistence(config).AddIdentityConfigs();
         services.AddScoped<ISignInService, SignInService>();
+    }
+
+    public static IEndpointRouteBuilder MapSignalRHubs(this IEndpointRouteBuilder app)
+    {
+        app.MapHub<EventsHub>("/eventsHub");
+        app.MapHub<UsersHub>("/usersHub");
+
+        return app;
     }
 }
