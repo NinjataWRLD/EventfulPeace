@@ -3,6 +3,7 @@ using System;
 using EventfulPeace.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventfulPeace.Identity.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20250321142042_Added_Admin")]
+    partial class Added_Admin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,28 +290,6 @@ namespace EventfulPeace.Identity.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", "Identity");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("2c7667ad-716b-4606-b50d-a370ecdb1a00"),
-                            RoleId = new Guid("f3ad41d3-ee90-4988-9195-8b2a8f4f2733")
-                        },
-                        new
-                        {
-                            UserId = new Guid("7f6e3868-ca03-44d6-b4a3-d947ac012ca6"),
-                            RoleId = new Guid("f3ad41d3-ee90-4988-9195-8b2a8f4f2733")
-                        },
-                        new
-                        {
-                            UserId = new Guid("a9c4e2e4-f8d9-49ce-ae37-7dda2d65df90"),
-                            RoleId = new Guid("fad1b19d-5333-4633-bd84-d67c64649f65")
-                        },
-                        new
-                        {
-                            UserId = new Guid("a9c5e2e4-f8d9-49ce-ae37-7dda2d65df90"),
-                            RoleId = new Guid("fab1b19d-5333-4633-bd84-d67c64649f65")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

@@ -1,0 +1,75 @@
+﻿@model (UsersModel Users, EventsModel Events)
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-center">Users</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in Model.Users.Users)
+                        {
+                            <tr>
+                                <td>@u.Name</td>
+                                <td>@u.Email</td>
+                                <td>@u.Role</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_PaginationPartial"
+                     view-data="ViewData"
+                     view-data-page-param="@("usersPage")"
+                     view-data-limit-param="@("usersLimit")"
+                     view-data-other-page-param="@("eventsPage")"
+                     view-data-other-page="@(Model.Events.Page)"
+                     view-data-other-limit-param="@("eventsLimit")"
+                     view-data-other-limit="@(Model.Events.Limit)"
+                     model="new PaginationViewModel(Model.Users.Page, Model.Users.Limit, Model.Users.Total)" />
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="text-center">Events</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Location</th>
+                            <th>Occurs At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model.Events.Events)
+                        {
+                            <tr>
+                                <td>@e.Name</td>
+                                <td>@e.Location.Name</td>
+                                <td>@e.OccursAt</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_PaginationPartial"
+                     view-data="ViewData"
+                     view-data-page-param="@("eventsPage")"
+                     view-data-limit-param="@("eventsLimit")"
+                     view-data-other-page-param="@("usersPage")"
+                     view-data-other-page="@(Model.Users.Page)"
+                     view-data-other-limit-param="@("usersLimit")"
+                     view-data-other-limit="@(Model.Users.Limit)"
+                     model="new PaginationViewModel(Model.Events.Page, Model.Events.Limit, Model.Events.Total)" />
+        </div>
+    </div>
+</div>

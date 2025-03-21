@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Necessary services
 builder.Services.AddAuthN().AddCookie();
-builder.Services.AddAuthZ([Individual, Organization]);
+builder.Services.AddAuthZ([Individual, Organization, Admin]);
 
 // Project Layers
 builder.Services.AddInfrastructure(builder.Configuration);

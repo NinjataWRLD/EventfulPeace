@@ -30,10 +30,18 @@ public class AppUserConfigurations : IEntityTypeConfiguration<AppUser>
                 id: Ids.Organization1.Value,
                 username: Usernames.Organization1,
                 email: Emails.Organization1,
+                passHash: "AQAAAAIAAYagAAAAEEUe31maWfuZY6V8MQBzUWKerMKobDukREinVfML3Yl2z+Nr6IIQZKvX4WKqbTUw6w==",
+                concStamp: "c5940d6f-d5c0-4f84-a262-da9b07525c3c",
+                secStamp: "FNNIT3NPOZKZK2E67WFLV5R3RGVBX7LV",
+                phone: "0885566781"
+            ),
+            CreateUser(
+                id: Ids.Admin1.Value,
+                username: Usernames.Admin1,
+                email: Emails.Admin1,
                 passHash: "AQAAAAIAAYagAAAAEFqtQ33BvarNRyFcmV4z48fPBlIY8zd0de90qq3Cdm1Row+2WRmEjVJk1yPadBkrSA==",
                 concStamp: "5c94b43f-861c-4efa-a670-5627e49d354d",
-                secStamp: "YIA26UZDSN2V2U5PVDEK4F3EJS3P5D3X",
-                phone: "0885566781"
+                secStamp: "YIA26UZDSN2V2U5PVDEK4F3EJS3P5D3X"
             ),
         ]);
 
