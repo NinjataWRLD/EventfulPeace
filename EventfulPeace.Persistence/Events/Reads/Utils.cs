@@ -8,7 +8,7 @@ namespace EventfulPeace.Persistence.Events.Reads;
 
 public static class Utils
 {
-    public static IQueryable<Event> WithFilter(this IQueryable<Event> queryable, EventId[]? ids, UserId? creatorId)
+    public static IQueryable<Event> WithFilter(this IQueryable<Event> queryable, EventId[]? ids, UserId? creatorId, string? name)
     {
         if (ids is not null)
         {
@@ -17,6 +17,10 @@ public static class Utils
         if (creatorId is not null)
         {
             queryable = queryable.Where(x => x.CreatorId == creatorId);
+        }
+        if (name is not null)
+        {
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(name.ToLower()));
         }
 
         return queryable;

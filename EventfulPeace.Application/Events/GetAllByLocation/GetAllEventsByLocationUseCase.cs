@@ -13,7 +13,7 @@ public class GetAllEventsByLocationUseCase(IEventReads eventReads, IUserReads us
 {
     public async Task<Dictionary<string, GetAllEventsByLocationDto[]>> Handle(GetAllEventsByLocationRequest req, CancellationToken ct)
     {
-        Dictionary<string, Event[]> dict = await eventReads.AllByLocationAsync(track: false, ct: ct).ConfigureAwait(false);
+        Dictionary<string, Event[]> dict = await eventReads.AllByLocationAsync(name: req.Name, track: false, ct: ct).ConfigureAwait(false);
 
         UserId[] userIds = [.. dict.Values.SelectMany(x => x.Select(x => x.CreatorId)).Distinct()];
         Dictionary<UserId, User> users = await userReads.AllAsync(userIds, ct: ct).ConfigureAwait(false);

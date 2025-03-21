@@ -11,9 +11,12 @@ namespace EventfulPeace.Web.Controllers;
 public class HomeController(ISender sender) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index(int limit = 20, int page = 1)
+    public async Task<IActionResult> Index(string? name = null, int limit = 20, int page = 1)
         => View(model: await sender.Send(
-            new GetAllEventsByLocationRequest(Pagination: new(limit, page))
+            new GetAllEventsByLocationRequest(
+                Pagination: new(limit, page),
+                Name: name
+            )
         ));
 
     [HttpGet]
