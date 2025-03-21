@@ -10,15 +10,18 @@ namespace EventfulPeace.Identity.AppUsers.Reads;
 
 public class AppUserReads(UserManager<AppUser> manager) : IUserReads
 {
-    public async Task<Result<User>> AllAsync(bool track = true, CancellationToken ct = default)
+    public async Task<Result<User>> AllAsync(UsersQuery query, bool track = true, CancellationToken ct = default)
     {
         IQueryable<AppUser> queryable = manager.Users
             .WithTracking(track)
             .Where(x => x.UserName != null && x.Email != null);
 
+        int page = query.Pagination.Page, limit = query.Pagination.Limit;
         int count = await queryable.CountAsync(ct).ConfigureAwait(false);
+
         User[] items = await queryable
             .Select(x => x.ToUser())
+            .Skip((page - 1) * limit).Take(limit)
             .ToArrayAsync(ct)
             .ConfigureAwait(false);
 
