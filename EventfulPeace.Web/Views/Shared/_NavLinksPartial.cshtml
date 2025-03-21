@@ -1,7 +1,14 @@
 ﻿<div class="d-flex me-3">
     @if (User.GetAuthentication())
     {
-        <a class="btn btn-outline-success me-2" asp-controller="Events" asp-action="Create">Create Event</a>
-        <a class="btn btn-outline-success" asp-controller="Events" asp-action="Index">My Events</a>
+        if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-outline-success me-2" asp-controller="Admin" asp-action="Index">Dashboard</a>
+        }
+        else
+        {
+            <a class="btn btn-outline-success me-2" asp-controller="Events" asp-action="Create">Create Event</a>
+            <a class="btn btn-outline-success" asp-controller="Events" asp-action="Index">My Events</a>            
+        }
     }
 </div>

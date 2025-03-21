@@ -10,4 +10,5 @@ public interface IEventReads
     Task<Location[]> AllLocationsAsync(CancellationToken ct = default);
     Task<Dictionary<string, Event[]>> AllByLocationAsync(bool track = true, CancellationToken ct = default);
     Task<Event?> SingleAsync(EventId id, bool track = true, CancellationToken ct = default);
+    Task<UserId[]> ParticipantsByIdAsync(EventId id, CancellationToken ct = default);
 }
