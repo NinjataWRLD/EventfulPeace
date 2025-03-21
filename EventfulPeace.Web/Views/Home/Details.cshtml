@@ -14,6 +14,19 @@
                     <h2 class="card-title"><span id="event-name">@Model.Name</span></h2>
                     <h5 class="card-subtitle mb-2 text-muted">Date: <span id="event-date">@Model.OccursAt</span></h5>
                     <p class="card-text"><strong>Description: </strong> <span id="event-description">@Model.Description</span></p>
+
+                    
+                    <div class="mb-3">
+                        <label for="participants-list" class="form-label"><strong>Participants:</strong></label>
+                        <select class="form-select" id="participants-list" style="max-width: 250px;">
+                            <option selected disabled>Participants Count: @Model.Participants.Count()</option>
+                            @foreach (var participant in Model.Participants)
+                            {
+                                <option disabled>@participant.Name</option>
+                            }
+                        </select>
+                    </div>
+
                     <p class="card-text"><strong>Creator: </strong> <span id="event-creator">@Model.Creator.Name</span></p>
                     <form asp-controller="Events" asp-action="Join" asp-route-id="@Model.Id.Value">
                         <button class="btn btn-custom mt-3">Join Event</button>
@@ -29,6 +42,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 
 @section Styles {

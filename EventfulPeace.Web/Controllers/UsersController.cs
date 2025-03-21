@@ -2,14 +2,16 @@
 using EventfulPeace.Application.Users.Logout;
 using EventfulPeace.Application.Users.RegisterIndividual;
 using EventfulPeace.Application.Users.RegisterOrganization;
+using EventfulPeace.Web.Hubs;
 using EventfulPeace.Web.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EventfulPeace.Web.Controllers;
 
 [Route("Users")]
-public class UsersController(ISender sender) : Controller
+public class UsersController(ISender sender, IHubContext<UsersHub> hub) : Controller
 {
     private RedirectToActionResult RedirectToHome()
         => RedirectToAction("Index", "Home");
@@ -29,6 +31,8 @@ public class UsersController(ISender sender) : Controller
                 Email: form.IndividualModel.Email
             );
             await sender.Send(request, ct).ConfigureAwait(false);
+            await hub.Clients.All.SendAsync("UsersChanged", ct).ConfigureAwait(false);
+
             return RedirectToHome();
         }
         catch (Exception ex)
@@ -50,6 +54,8 @@ public class UsersController(ISender sender) : Controller
                 Phone: form.OrganizationModel.Phone
             );
             await sender.Send(request, ct).ConfigureAwait(false);
+            await hub.Clients.All.SendAsync("UsersChanged", ct).ConfigureAwait(false);
+
             return RedirectToHome();
         }
         catch (Exception ex)

@@ -19,7 +19,7 @@ public class EventReads(ApplicationContext context) : IEventReads
         IQueryable<Event> queryable = context.Events
             .WithTracking(track)
             .Include(x => x.Location)
-            .WithFilter(ids, query.CreatorId)
+            .WithFilter(ids, query.CreatorId, null)
             .WithSearch(query.Name);
 
         int count = await queryable.CountAsync(ct).ConfigureAwait(false);
@@ -34,11 +34,12 @@ public class EventReads(ApplicationContext context) : IEventReads
             Items: items
         );
     }
-    
-    public async Task<Dictionary<string, Event[]>> AllByLocationAsync(bool track = true, CancellationToken ct = default)
+
+    public async Task<Dictionary<string, Event[]>> AllByLocationAsync(string? name = null, bool track = true, CancellationToken ct = default)
     {
         IQueryable<Event> queryable = context.Events
             .WithTracking(track)
+            .WithFilter(null, null, name)
             .Include(x => x.Location);
 
         return await queryable
