@@ -1,0 +1,36 @@
+﻿@model PaginationViewModel
+@{
+    int page = Model.Page;
+    string pageParam = Convert.ToString(ViewData["page-param"]) ?? "page";
+    int limit = Model.Limit;
+    string limitParam = Convert.ToString(ViewData["limit-param"]) ?? "limit";
+
+    int otherPage = Convert.ToInt32(ViewData["other-page"]);
+    string otherPageParam = Convert.ToString(ViewData["other-page-param"]) ?? "other-page";
+    int otherLimit = Convert.ToInt32(ViewData["other-limit"]);
+    string otherLimitParam = Convert.ToString(ViewData["other-limit-param"]) ?? "other-limit";
+
+    int total = Model.Total;
+    int pagesCount = (int)Math.Ceiling((double)total / limit);
+}
+
+<div class="card-footer rounded-3">
+    <nav>
+        <ul id="created-pagination" class="pagination justify-content-center mb-0">
+            @for (int i = 1; i <= pagesCount; i++)
+            {
+                <li class="page-item rounded-3 @(page == i ? "active" : string.Empty)">
+                    <a class="page-link" asp-all-route-data="new Dictionary<string, string>()
+                        {
+                            [pageParam] = i.ToString(),
+                            [limitParam] = limit.ToString(),
+                            [otherPageParam] = otherPage.ToString(),
+                            [otherLimitParam] = otherLimit.ToString(),
+                        }">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

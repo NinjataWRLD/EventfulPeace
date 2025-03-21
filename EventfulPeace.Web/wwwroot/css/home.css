@@ -33,7 +33,13 @@
     border-color: #fff6a3;
 }
 
-    .btn-warning:hover {
-        background-color: #ffe45c; /* Slightly darker yellow on hover */
-        border-color: #ffe45c;
-    }
+.btn-warning:hover {
+    background-color: #ffe45c; /* Slightly darker yellow on hover */
+    border-color: #ffe45c;
+}
+
+.carousel-inner img {
+    width: 100%;         /* Ensures the image fills the container horizontally */
+    height: 500px;       /* Set a fixed height for the carousel */
+    object-fit: cover;   /* Ensures images are cropped to fit the frame */
+}

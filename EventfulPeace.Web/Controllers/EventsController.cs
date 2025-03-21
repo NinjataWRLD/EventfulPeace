@@ -22,27 +22,49 @@ namespace EventfulPeace.Web.Controllers;
 public class EventsController(ISender sender, IWebHostEnvironment env) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> Index(int page = 1, int limit = 20, string? name = null, CancellationToken ct = default)
-        => View(model:
-            await sender.Send(new GetAllEventsRequest(
-                Pagination: new(limit, page),
-                ParticipantId: User.GetUserId(),
-                Name: name
-            ), ct));
+    public async Task<IActionResult> Index(
+        int createdPage = 1,
+        int createdLimit = 3,
+        int joinedPage = 1,
+        int joinedLimit = 3,
+        CancellationToken ct = default
+    )
+    {
+        var created = await sender.Send(new GetAllEventsRequest(
+                Pagination: new(createdLimit, createdPage),
+                CreatorId: User.GetUserId()
+            ), ct).ConfigureAwait(false);
+
+        var joined = await sender.Send(new GetAllEventsRequest(
+                Pagination: new(joinedLimit, joinedPage),
+                ParticipantId: User.GetUserId()
+            ), ct).ConfigureAwait(false);
+
+        return View(model: (
+            Created: new EventsModel(
+                Events: [.. created.Items],
+                Total: created.Count,
+                Page: createdPage,
+                Limit: createdLimit
+            ),
+            Joined: new EventsModel(
+                Events: [.. joined.Items],
+                Total: joined.Count,
+                Page: joinedPage,
+                Limit: joinedLimit
+            )
+        ));
+    }
 
     [HttpGet]
-    public async Task<IActionResult> Created(int page = 1, int limit = 20, string? name = null, CancellationToken ct = default)
-        => View(model: (
-            Events: await sender.Send(new GetAllEventsRequest(
-                Pagination: new(limit, page),
-                CreatorId: User.GetUserId(),
-                Name: name
-            ), ct),
-            Form: new CreateEventForm
-            {
-                Locations = await sender.Send(new GetAllLocationsRequest(), ct)
-            }
-        ));
+    public async Task<IActionResult> Create(CancellationToken ct = default)
+    {
+        var locations = await sender.Send(new GetAllLocationsRequest(), ct);
+        return View(new CreateEventForm()
+        {
+            Locations = [.. locations.Select(l => new LocationModel(l.Id.Value, l.Name))]
+        });
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateEventForm form, CancellationToken ct = default)
