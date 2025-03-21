@@ -1,0 +1,27 @@
+﻿.section-divider {
+    border-top: 2px solid #006400; /* Dark Green line to separate sections */
+    margin: 40px 0;
+}
+
+/*Added the css for the create forms*/
+.container__create-event {
+    position: relative;
+    margin: auto;
+    max-width: 700px;
+    margin-top: 60px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .card-header h4 {
+        padding: 20px;
+        font-family: 'Montserrat', sans-serif;
+    }
