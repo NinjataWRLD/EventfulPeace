@@ -1,3 +1,4 @@
+using EventfulPeace.Application.Events.DownloadImage;
 using EventfulPeace.Application.Events.GetAllByLocation;
 using EventfulPeace.Application.Events.GetSingle;
 using EventfulPeace.Web.Models;
@@ -21,20 +22,28 @@ public class HomeController(ISender sender) : Controller
 
     [HttpGet]
     public async Task<IActionResult> Details(Guid id, CancellationToken ct = default)
-        => View(model: await sender.Send(
-            new GetSingleEventRequest(Id: EventId.New(id)), ct
-        ));
-
-    [HttpGet]
-    public async Task<IActionResult> DownloadEventImage(Guid id, CancellationToken ct = default)
     {
         var e = await sender.Send(
             new GetSingleEventRequest(Id: EventId.New(id)), ct
         );
-        return File(
-            virtualPath: e.Image.Path,
-            contentType: e.Image.Extension == "png" ? "image/png" : "image/jpeg"
+        var f = await sender.Send(
+            new DownloadEventImageRequest(Id: EventId.New(id)), ct
         );
+
+        return View(new EventModel(
+            Id: e.Id.Value,
+            Name: e.Name,
+            Description: e.Description,
+            Location: e.Location,
+            Creator: e.Creator,
+            Participants: e.Participants,
+            CreatedAt: e.CreatedAt,
+            OccursAt: e.OccursAt,
+            File: new FileModel(
+                PresignedUrl: f.PresignedUrl,
+                ContentType: f.ContentType
+            )
+        ));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

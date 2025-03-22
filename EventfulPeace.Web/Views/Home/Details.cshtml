@@ -1,5 +1,5 @@
 ﻿@using EventfulPeace.Application.Events.GetSingle
-@model GetSingleEventDto
+@model EventModel
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -15,7 +15,7 @@
                     <h5 class="card-subtitle mb-2 text-muted">Date: <span id="event-date">@Model.OccursAt</span></h5>
                     <p class="card-text"><strong>Description: </strong> <span id="event-description">@Model.Description</span></p>
 
-                    
+
                     <div class="mb-3">
                         <label for="participants-list" class="form-label"><strong>Participants:</strong></label>
                         <select class="form-select" id="participants-list" style="max-width: 250px;">
@@ -28,23 +28,36 @@
                     </div>
 
                     <p class="card-text"><strong>Creator: </strong> <span id="event-creator">@Model.Creator.Name</span></p>
-                    <form asp-controller="Events" asp-action="Join" asp-route-id="@Model.Id.Value">
+                    <form asp-controller="Events" asp-action="Join" asp-route-id="@Model.Id">
                         <button class="btn btn-custom mt-3">Join Event</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 d-flex align-items-center justify-content-center"> <!-- Full height & centered content -->
+            <div class="card h-100 d-flex align-items-center justify-content-center">
+                <!-- Full height & centered content -->
                 <div class="card-body text-center">
-                    <img src="~/@Model.Image.Path" alt="Event Image" class="img-fluid rounded" style="max-height: 100%; object-fit: cover;">
+                    <img id="image" alt="Event Image" class="img-fluid rounded" style="max-height: 100%; object-fit: cover;">
                 </div>
             </div>
         </div>
     </div>
-    
+
 </div>
 
 @section Styles {
     <lin rel="stylesheet" href="~/css/event-details.css" />
+}
+
+
+@section Scripts {
+    <script src="~/js/file-download.js"></script>
+    <script>
+        (async () => {
+            const url = '@Html.Raw(Model.File.PresignedUrl)';
+            const blob = await fetchFile(url, '@Model.File.ContentType');
+            document.getElementById('image').src = URL.createObjectURL(blob);
+        })();
+    </script>
 }

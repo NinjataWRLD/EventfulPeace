@@ -3,6 +3,7 @@ using System;
 using EventfulPeace.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventfulPeace.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250322084934_Modified_File_Handling")]
+    partial class Modified_File_Handling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,7 +232,7 @@ namespace EventfulPeace.Persistence.Migrations
                             CreatorId = new Guid("a9c4e2e4-f8d9-49ce-ae37-7dda2d65df90"),
                             Description = "Welcome to our not-like-the-others Martenitsa Workshop!",
                             ImageContentType = "image/jpeg",
-                            ImageKey = "images/Martenitsa Workshop-762ddec2-25c9-4183-9891-72a19d84a839.jpg",
+                            ImageKey = "images/Martenitsa Workshop-762ddec2-25c9-4183-9891-72a19d84a839..jpg",
                             LocationId = new Guid("b60131ca-1d56-4e4e-b43e-b68eed269473"),
                             Name = "Martenitsa Workshop",
                             OccursAt = new DateTime(2025, 3, 3, 15, 30, 0, 0, DateTimeKind.Utc)
@@ -241,7 +244,7 @@ namespace EventfulPeace.Persistence.Migrations
                             CreatorId = new Guid("2c7667ad-716b-4606-b50d-a370ecdb1a00"),
                             Description = "Endulge in various cuisines, carefully prepared by the best of street food cooks",
                             ImageContentType = "image/jpeg",
-                            ImageKey = "images/Street Food Festeival-e1101e2c-32cc-456f-9c82-4f1d1a65d141.jpg",
+                            ImageKey = "images/Street Food Festeival-e1101e2c-32cc-456f-9c82-4f1d1a65d141..jpg",
                             LocationId = new Guid("e3c0e30b-5587-4c1a-a864-db1d66a9c3e0"),
                             Name = "Street Food Festeival",
                             OccursAt = new DateTime(2025, 3, 21, 19, 30, 0, 0, DateTimeKind.Utc)
@@ -253,7 +256,7 @@ namespace EventfulPeace.Persistence.Migrations
                             CreatorId = new Guid("7f6e3868-ca03-44d6-b4a3-d947ac012ca6"),
                             Description = "Gaze at the stars through the lenses of professional telescopes and witness the beauty of the night sky",
                             ImageContentType = "image/webp",
-                            ImageKey = "images/Astronomical View-f3ad41d3-ee90-4988-9195-8b2a8f4f2733.webp",
+                            ImageKey = "images/Astronomical View-f3ad41d3-ee90-4988-9195-8b2a8f4f2733..webp",
                             LocationId = new Guid("233a5b44-aefd-4163-94ac-7c9d921d8129"),
                             Name = "Astronomical View",
                             OccursAt = new DateTime(2025, 4, 5, 10, 0, 0, 0, DateTimeKind.Utc)
@@ -265,7 +268,7 @@ namespace EventfulPeace.Persistence.Migrations
                             CreatorId = new Guid("7f6e3868-ca03-44d6-b4a3-d947ac012ca6"),
                             Description = "A sport event for all nature lovers, with a route through picturesque greenery",
                             ImageContentType = "image/jpeg",
-                            ImageKey = "images/The Greenery Challenge-fad1b19d-5333-4633-bd84-d67c64649f65.jpg",
+                            ImageKey = "images/The Greenery Challenge-fad1b19d-5333-4633-bd84-d67c64649f65..jpg",
                             LocationId = new Guid("42a6aff1-d977-4ef0-90ca-097ebeeb4eea"),
                             Name = "The Greenery Challenge",
                             OccursAt = new DateTime(2025, 5, 5, 8, 0, 0, 0, DateTimeKind.Utc)

@@ -1,4 +1,5 @@
-﻿using EventfulPeace.Application.Common.Exceptions;
+﻿using EventfulPeace.Application.Common;
+using EventfulPeace.Application.Common.Exceptions;
 using EventfulPeace.Domain.Common.Repositories;
 using EventfulPeace.Domain.Events;
 using EventfulPeace.Domain.Events.Reads;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace EventfulPeace.Application.Events.Delete;
 
-public class DeleteEventUseCase(IEventReads reads, IEventWrites writes, IUnitOfWork uow) 
+public class DeleteEventUseCase(IEventReads reads, IEventWrites writes, IUnitOfWork uow, IStorageService storage) 
     : IRequestHandler<DeleteEventRequest>
 {
     public async Task Handle(DeleteEventRequest req, CancellationToken ct)
@@ -20,5 +21,7 @@ public class DeleteEventUseCase(IEventReads reads, IEventWrites writes, IUnitOfW
 
         writes.Remove(e);
         await uow.SaveChangesAsync(ct).ConfigureAwait(false);
+
+        await storage.DeleteFileAsync(e.ImageKey, ct).ConfigureAwait(false);
     }
 }

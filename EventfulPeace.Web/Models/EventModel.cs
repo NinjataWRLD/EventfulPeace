@@ -1,16 +1,16 @@
 ﻿using EventfulPeace.Application.Common.Dtos;
 using EventfulPeace.Application.Events.Dtos;
-using EventfulPeace.Domain.Common.TypedIds;
 
-namespace EventfulPeace.Application.Events.GetSingle;
+namespace EventfulPeace.Web.Models;
 
-public record GetSingleEventDto(
-    EventId Id,
+public record EventModel(
+    Guid Id,
     string Name,
     string Description,
     DateTime CreatedAt,
     DateTime OccursAt,
     LocationDto Location,
     UserDto Creator,
-    UserDto[] Participants
+    UserDto[] Participants,
+    FileModel File
 );
