@@ -1,5 +1,4 @@
-﻿using EventfulPeace.Application.Common.Dtos;
-using EventfulPeace.Application.Events.Create;
+﻿using EventfulPeace.Application.Events.Create;
 using EventfulPeace.Application.Events.Delete;
 using EventfulPeace.Application.Events.Edit;
 using EventfulPeace.Application.Events.GetAll;
@@ -7,7 +6,7 @@ using EventfulPeace.Application.Events.GetLocations;
 using EventfulPeace.Application.Events.GetSingle;
 using EventfulPeace.Application.Events.Join;
 using EventfulPeace.Application.Events.Leave;
-using EventfulPeace.Application.Events.SetImagePath;
+using EventfulPeace.Application.Events.UploadImage;
 using EventfulPeace.Domain.Common.TypedIds;
 using EventfulPeace.Web.Extensions;
 using EventfulPeace.Web.Hubs;
@@ -21,7 +20,11 @@ using EventId = EventfulPeace.Domain.Common.TypedIds.EventId;
 namespace EventfulPeace.Web.Controllers;
 
 [Authorize]
-public class EventsController(ISender sender, IWebHostEnvironment env, IHubContext<EventsHub> hub) : Controller
+public class EventsController(
+    ISender sender,
+    IHubContext<EventsHub> hub,
+    IHttpClientFactory httpClientFactory
+) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> Index(
@@ -73,9 +76,23 @@ public class EventsController(ISender sender, IWebHostEnvironment env, IHubConte
     {
         try
         {
-            CreateEventRequest request = new(
+            UploadEventImageRequest imageRequest = new(
+                EventName: form.Name,
+                ContentType: form.Image.ContentType,
+                FileName: form.Image.FileName
+            );
+            var (Key, Url) = await sender.Send(imageRequest, ct).ConfigureAwait(false);
+
+            var success = await httpClientFactory
+                .CreateClient("StorageClient")
+                .UploadFileAsync(form.Image, Url, ct)
+                .ConfigureAwait(false);
+            if (!success) return BadRequest("Failed to upload image.");
+
+            CreateEventRequest eventRequest = new(
                 Name: form.Name,
                 Description: form.Description,
+                Image: (Key, form.Image.ContentType),
                 OccursAt: new DateTime(
                     DateOnly.FromDateTime(form.OccursAt),
                     TimeOnly.FromDateTime(form.OccursAt),
@@ -84,15 +101,8 @@ public class EventsController(ISender sender, IWebHostEnvironment env, IHubConte
                 CreatorId: User.GetUserId(),
                 LocationId: LocationId.New(form.LocationId)
             );
-            EventId id = await sender.Send(request, ct).ConfigureAwait(false);
+            EventId id = await sender.Send(eventRequest, ct).ConfigureAwait(false);
 
-            string path = await FileExtensions.UploadImageAsync(env, form.Image, $"{form.Name}-{id}");
-            SetEventImagePathRequest setImageRequest = new(
-                Id: id,
-                Path: path,
-                CreatorId: User.GetUserId()
-            );
-            await sender.Send(setImageRequest, ct).ConfigureAwait(false);
             await hub.Clients.All.SendAsync("EventsChanged", ct);
 
             return RedirectToAction(nameof(Index));
@@ -181,10 +191,6 @@ public class EventsController(ISender sender, IWebHostEnvironment env, IHubConte
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
-        var e = await sender.Send(new GetSingleEventRequest(EventId.New(id)), ct);
-        ImageDto image = e.Image;
-        FileExtensions.DeleteFile(env, image.Path, image.Extension);
-
         DeleteEventRequest request = new(
             Id: EventId.New(id),
             CreatorId: User.GetUserId()

@@ -1,4 +1,9 @@
-﻿using EventfulPeace.Application;
+﻿using Amazon;
+using Amazon.Runtime;
+using Amazon.S3;
+using CustomCADs.Shared.Infrastructure.Storage;
+using EventfulPeace.Application;
+using EventfulPeace.Application.Common;
 using EventfulPeace.Application.Middleware;
 using EventfulPeace.Application.Users;
 using EventfulPeace.Identity;
@@ -6,11 +11,13 @@ using EventfulPeace.Identity.AppRoles;
 using EventfulPeace.Identity.AppUsers;
 using EventfulPeace.Web;
 using EventfulPeace.Web.Hubs;
+using EventfulPeace.Web.Storage;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 #pragma warning disable IDE0130
@@ -47,6 +54,25 @@ public static class ProgramExtensions
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
         return services;
+    }
+
+    public static void AddStorage(this IServiceCollection services, IConfiguration config)
+    {
+        services.Configure<StorageSettings>(config.GetSection("Storage"));
+        services.AddSingleton<IAmazonS3>(sp =>
+        {
+            var settings = sp.GetRequiredService<IOptions<StorageSettings>>().Value;
+
+            AmazonS3Config config = new()
+            {
+                RegionEndpoint = RegionEndpoint.GetBySystemName(settings.Region),
+            };
+
+            BasicAWSCredentials credentials = new(settings.AccessKey, settings.SecretKey);
+            return new AmazonS3Client(credentials, config);
+        });
+        services.AddScoped<IStorageService, AmazonS3Service>();
+        services.AddHttpClient("StorageClient");
     }
 
     public static async Task AddDbMigrationUpdater(this IServiceCollection services)

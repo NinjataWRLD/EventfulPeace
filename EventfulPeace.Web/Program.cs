@@ -10,6 +10,7 @@ builder.Services.AddSignalR();
 // Project Layers
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddUseCases();
+builder.Services.AddStorage(builder.Configuration);
 
 // Database Updater
 if (args.Contains("--migrate"))

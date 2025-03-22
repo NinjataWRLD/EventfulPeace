@@ -14,6 +14,8 @@ public class CreateEventUseCase(IEventWrites writes, IUnitOfWork uow)
         Event entity = Event.Create(
             name: req.Name,
             description: req.Description,
+            imageKey: req.Image.Key,
+            imageContentType: req.Image.ContentType,
             occursAt: req.OccursAt,
             locationId: req.LocationId,
             creatorId: req.CreatorId

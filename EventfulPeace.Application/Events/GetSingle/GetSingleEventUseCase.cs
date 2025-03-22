@@ -26,8 +26,7 @@ public class GetSingleEventUseCase(IEventReads eventReads, IUserReads userReads)
 
         return entity.ToDto(
             creator: user.ToDto(),
-            participants: [.. participants.Values.Select(x => x.ToDto())],
-            image: new ImageDto() { Path = entity.ImagePath }
+            participants: [.. participants.Values.Select(x => x.ToDto())]
         );
     }
 }
